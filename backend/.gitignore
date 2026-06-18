@@ -1,0 +1,8 @@
+.env*
+
+bin/
+obj/
+
+
+
+plan.md
