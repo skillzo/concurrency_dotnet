@@ -1,5 +1,8 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using backend.DTOs;
 using backend.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -35,5 +38,15 @@ public class AuthController : ApiControllerBase
             return UnauthorizedResponse("Invalid credentials.");
 
         return Success(result);
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var username = User.FindFirstValue(JwtRegisteredClaimNames.UniqueName);
+
+        return Success(new { UserId = userId, Username = username });
     }
 }
